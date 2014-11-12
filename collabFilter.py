@@ -28,9 +28,6 @@ def main():
 
 def readRatings(ratings_file):
     
-    # Write code to read ratings file and construct dictionary of dictionaries
-
-    
     ratings_file = csv.reader(ratings_file, delimiter='\t')
     for row in ratings_file:
         user_id=row[0]
@@ -48,10 +45,7 @@ def readRatings(ratings_file):
 
 def similarity(user_ratings_1, user_ratings_2):
 
-    # Write code to implement the Pearson correlation equation
-    # Return the similarity of user 1 and user 2 based on tehir ratings
-
-
+    # Return the similarity of user 1 and user 2 based on their ratings
     #average calculation for each user    
     
     sum1=0.0
@@ -74,17 +68,13 @@ def similarity(user_ratings_1, user_ratings_2):
         for movie_2 in user_ratings_2:
             if(movie_1==movie_2):
                 co_rated.append((float(user_ratings_1[movie_1]),float(user_ratings_2[movie_2])))
-                
-   
-        
+                      
     #NUMERATOR CALCULATION
     num_sum=0.0
     for value in co_rated:
         r1,r2=value
         num_sum+=(r1-r1_avg)*(r2-r2_avg)
    
-
-
     #DENOMINATOR CALCULATION
     den_sum1=0.0
     den_sum2=0.0
@@ -100,27 +90,22 @@ def similarity(user_ratings_1, user_ratings_2):
     else:
         sim=num_sum/den_total
 
-
     return sim
 
 
 def nearestNeighbors(user_id, all_user_ratings, k):
-
-    # Write code to determine the k nearest neighbors for user_id
+    
     nearest=[]
     for each_user in all_user_ratings:
         if user_id!=each_user:
             nearest.append((each_user,similarity(ratings[user_id],all_user_ratings[each_user])))
-            
-    
+              
     nearest=sorted(nearest, key=lambda user: user[1] ,reverse=True)
         
     return nearest[0:k]
 
-
 def predict(item, k_nearest_neighbors, all_user_ratings):
     
-    # Write code to predict the rating for the item given the k nearest neighbors of the user
     mod_knn=[]
     sum_sim=0.0
 
@@ -134,8 +119,7 @@ def predict(item, k_nearest_neighbors, all_user_ratings):
         user,sim=each
         sum_sim+=sim
 
-    n_sum=0.0
-    #print mod_knn   
+    n_sum=0.0   
     for neighbor in mod_knn:
         user,sim=neighbor
         n_sum+=(float(sim)*float(all_user_ratings[user][item]))
